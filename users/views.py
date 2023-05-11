@@ -23,6 +23,8 @@ class LoginView(APIView):
 
         user = User.objects.filter(email=email).first()
 
+        print(user,password)
+
         if user is None:
             raise AuthenticationFailed('User not found!')
 
@@ -41,7 +43,8 @@ class LoginView(APIView):
 
         response.set_cookie(key='jwt', value=token, httponly=True)
         response.data = {
-            'jwt': token
+            'jwt': token,
+            'name': user.name
         }
 
         return response
