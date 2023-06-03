@@ -11,9 +11,14 @@ import jwt, datetime
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+
+        except Exception as e:
+            error_message = "User with the email address already !"
+            return Response({"error": error_message})
 
 
 class LoginView(APIView):
